@@ -46,6 +46,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-off
 .lib{display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 10px 10px 14px;margin-bottom:8px}
 .lib:active{background:var(--c2)}
 .sum{font-size:13px;color:var(--mu)}
+#sq{margin:0 0 4px}
+.cat{display:flex;align-items:center;gap:10px;width:100%;min-height:50px;margin-top:8px;padding:0 14px;background:var(--c1);border:1px solid var(--ln);border-radius:14px;font-weight:700;color:var(--ac)}
+.cat span:first-child{flex:1;text-align:left}
+.cat .mu{font-weight:400}
+.cat svg{width:20px;height:20px;color:var(--mu);transition:transform .2s}
+.cat[aria-expanded=true]{margin-bottom:8px}
+.cat[aria-expanded=true] svg{transform:rotate(180deg)}
 .bar{height:8px;background:var(--c2);border-radius:99px;overflow:hidden;margin-top:10px}
 .bar i{display:block;height:100%;background:var(--ac);transition:width .3s}
 .sets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
@@ -91,6 +98,86 @@ const D3=DAYS.map(d=>d.slice(0,3));
 /* Exercise library: [id, name, muscle focus, category, YouTube URL or video ID]
    Paste your own links in the last slot, or use the ? popup in the app to set them. */
 const LIB=[
+['superman','Superman Hold','Lower back, glutes, rear delts','Pull',''],
+['revsnow','Reverse Snow Angels','Upper back, rear delts','Pull',''],
+['proneT','Prone T Raises','Rear delts, mid back','Pull',''],
+['swimmer','Swimmers','Lower back, glutes, shoulders','Pull',''],
+['wallpush','Wall Push-ups','Chest, triceps, shoulders (beginner)','Push',''],
+['kneepush','Knee Push-ups','Chest, triceps, front delts (beginner)','Push',''],
+['scappush','Scapular Push-ups','Serratus, shoulder blades','Push',''],
+['widepush','Wide Push-ups','Chest, front delts','Push',''],
+['negpush','Slow Negative Push-ups','Chest, triceps, control','Push',''],
+['spiderpush','Spiderman Push-ups','Chest, obliques, hips','Push',''],
+['glutebridge','Glute Bridge','Glutes, hamstrings','Legs',''],
+['wallsit','Wall Sit','Quads, glutes','Legs',''],
+['sumo','Sumo Squats','Inner thighs, glutes, quads','Legs',''],
+['squatpulse','Squat Pulses','Quads, glutes','Legs',''],
+['calf','Calf Raises','Calves','Legs',''],
+['revlunge','Reverse Lunges','Quads, glutes','Legs',''],
+['splitlunge','Static Split Lunges','Quads, glutes, balance','Legs',''],
+['sidelunge','Side Lunges','Inner thighs, glutes, quads','Legs',''],
+['donkey','Donkey Kicks','Glutes, hamstrings','Legs',''],
+['hydrant','Fire Hydrants','Glutes, hip abductors','Legs',''],
+['sidelegraise','Side-Lying Leg Raises','Outer glutes, hips','Legs',''],
+['goodmorning','Bodyweight Good Mornings','Hamstrings, glutes, lower back','Legs',''],
+['sglbridge','Single-Leg Glute Bridge','Glutes, hamstrings, core','Legs',''],
+['curtsy','Curtsy Lunges','Glutes, outer thighs','Legs',''],
+['cossack','Cossack Squats','Adductors, glutes, mobility','Legs',''],
+['slcalf','Single-Leg Calf Raises','Calves, balance','Legs',''],
+['sldl','Single-Leg Deadlift','Hamstrings, glutes, balance','Legs',''],
+['kneeplank','Knee Plank','Core (beginner)','Core',''],
+['crunch','Crunches','Upper abs','Core',''],
+['bicycle','Bicycle Crunches','Abs, obliques','Core',''],
+['revcrunch','Reverse Crunches','Lower abs','Core',''],
+['situp','Sit-ups','Abs, hip flexors','Core',''],
+['deadbug','Dead Bug','Deep core, coordination','Core',''],
+['birddog','Bird Dog','Core, lower back, glutes','Core',''],
+['legraise','Lying Leg Raises','Lower abs, hip flexors','Core',''],
+['flutter','Flutter Kicks','Lower abs, hip flexors','Core',''],
+['scissor','Scissor Kicks','Lower abs','Core',''],
+['russian','Russian Twists','Obliques','Core',''],
+['sideplank','Side Plank','Obliques, shoulders','Core',''],
+['heeltouch','Heel Touches','Obliques','Core',''],
+['toetouch','Toe Touches','Upper abs','Core',''],
+['shouldertap','Plank Shoulder Taps','Core, shoulders, anti-rotation','Core',''],
+['plankjack','Plank Jacks','Core, shoulders, cardio','Core',''],
+['revplank','Reverse Plank','Glutes, back, core','Core',''],
+['plankupdown','Plank Up-Downs','Core, triceps, shoulders','Core',''],
+['bearhold','Bear Hold','Core, shoulders, quads','Core',''],
+['marchspot','March in Place','Legs, cardio (beginner)','Cardio',''],
+['jjack','Jumping Jacks','Full body, cardio','Cardio',''],
+['highknees','High Knees','Hip flexors, legs, cardio','Cardio',''],
+['buttkicks','Butt Kicks','Hamstrings, cardio','Cardio',''],
+['jogspot','Jogging in Place','Legs, cardio','Cardio',''],
+['fastfeet','Fast Feet','Calves, agility, cardio','Cardio',''],
+['shadowbox','Shadow Boxing','Shoulders, arms, cardio','Cardio',''],
+['mountain','Mountain Climbers','Core, shoulders, cardio','Cardio',''],
+['skater','Skater Hops','Glutes, legs, balance','Cardio',''],
+['jumpsquat','Jump Squats','Quads, glutes, power','Cardio',''],
+['starjump','Star Jumps','Full body, power','Cardio',''],
+['froghop','Frog Jumps','Quads, glutes, power','Cardio',''],
+['inchworm','Inchworms','Hamstrings, core, shoulders','Cardio',''],
+['bearcrawl','Bear Crawl','Shoulders, core, legs','Cardio',''],
+['burpee','Burpees','Full body, cardio','Cardio',''],
+['armcircle','Arm Circles','Shoulders (warm-up)','Mobility',''],
+['shoulderroll','Shoulder Rolls','Shoulders, traps (warm-up)','Mobility',''],
+['wristcircle','Wrist Circles','Wrists (warm-up)','Mobility',''],
+['neckTilts','Neck Tilts','Neck (warm-up)','Mobility',''],
+['hipcircle','Hip Circles','Hips (warm-up)','Mobility',''],
+['legswing','Leg Swings','Hips, hamstrings (warm-up)','Mobility',''],
+['torsotwist','Standing Torso Twists','Spine, obliques (warm-up)','Mobility',''],
+['catcow','Cat-Cow','Spine, back','Mobility',''],
+['childpose','Child\'s Pose','Lower back, lats, hips','Mobility',''],
+['downdog','Downward Dog','Hamstrings, calves, shoulders','Mobility',''],
+['cobra','Cobra Stretch','Abs, spine','Mobility',''],
+['wga','World\'s Greatest Stretch','Hips, hamstrings, spine','Mobility',''],
+['hamstring','Hamstring Stretch','Hamstrings','Mobility',''],
+['quadstretch','Standing Quad Stretch','Quads, hip flexors','Mobility',''],
+['hipflexor','Kneeling Hip Flexor Stretch','Hip flexors','Mobility',''],
+['butterfly','Butterfly Stretch','Inner thighs, hips','Mobility',''],
+['wallangel','Wall Angels','Shoulders, upper back','Mobility',''],
+['chestopen','Chest Opener Stretch','Chest, front delts','Mobility',''],
+['deepsquat','Deep Squat Hold','Hips, ankles, lower back','Mobility',''],
 ['pullup','Pull-ups','Lats, biceps, upper back','Pull','https://youtu.be/aAggnpPyR6E'],
 ['chinup','Chin-ups','Biceps, lats','Pull','https://youtu.be/uoBfONI94kI'],
 ['row','Australian Rows','Mid back, rear delts, biceps','Pull','https://youtu.be/bHO0A4ZF_Zg'],
@@ -104,9 +191,21 @@ const LIB=[
 ['hlr','Hanging Leg Raises','Lower abs, hip flexors, grip','Core','https://youtu.be/ttdkm6ESUjI'],
 ['plank','Plank','Core, shoulders','Core','https://youtu.be/pvIjsG5Svck'],
 ['lsit','L-Sit','Abs, hip flexors, triceps','Core','https://youtu.be/_HbccxgnCg0'],
-['hollow','Hollow Body Hold','Abs, deep core','Core','https://youtu.be/3kC0YkaY6jo']
+['hollow','Hollow Body Hold','Abs, deep core','Core','https://youtu.be/3kC0YkaY6jo'],
+['archer','Archer Push-ups','Chest, triceps, one-sided strength','Push',''],
+['hindu','Hindu Push-ups','Shoulders, chest, spine mobility','Push',''],
+['divebomb','Dive Bomber Push-ups','Shoulders, chest, triceps','Push',''],
+['clappush','Clap Push-ups','Chest, triceps, power','Push',''],
+['pseudoplanche','Pseudo Planche Push-ups','Shoulders, chest, core','Push',''],
+['plancheleans','Planche Leans','Shoulders, wrists, core','Push',''],
+['tuckplanche','Tuck Planche Hold','Shoulders, core, wrists','Push',''],
+['jumplunge','Jumping Lunges','Quads, glutes, power','Legs',''],
+['shrimp','Shrimp Squats','Quads, glutes, balance','Legs',''],
+['vup','V-Ups','Abs, hip flexors','Core',''],
+['hollowrock','Hollow Rocks','Abs, deep core','Core',''],
+['windshield','Lying Windshield Wipers','Obliques, lower abs','Core','']
 ];
-const CATS=['Pull','Push','Legs','Core'];
+const CATS=['Pull','Push','Legs','Core','Cardio','Mobility'];
 const ex=id=>LIB.find(e=>e[0]===id);
 
 /* ---------- State ---------- */
@@ -128,7 +227,7 @@ const clone=o=>JSON.parse(JSON.stringify(o));
 const draft=d=>drafts[d]||(drafts[d]=clone(S.routines[d]||[]));
 const cnt=e=>{const a=S.done[e.u]||[];let n=0;for(let i=0;i<e.sets;i++)if(a[i])n++;return n};
 const ytId=v=>{v=(v||'').trim();const m=v.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test(v)?v:'')};
-const I={edit:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',move:'<path d="M17 3l4 4-4 4M21 7H8M7 21l-4-4 4-4M3 17h13"/>',del:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',plus:'<path d="M12 5v14M5 12h14"/>'};
+const I={edit:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',move:'<path d="M17 3l4 4-4 4M21 7H8M7 21l-4-4 4-4M3 17h13"/>',del:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',plus:'<path d="M12 5v14M5 12h14"/>',chev:'<path d="M6 9l6 6 6-6"/>'};
 const ic=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${I[n]}</svg>`;
 let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)};
 const sheet=h=>{$('#sheet').innerHTML=h;$('#ov').hidden=false};
@@ -138,13 +237,26 @@ const qBtn=x=>`<button class="q" data-act="vid" data-id="${x[0]}" aria-label="Ho
 const dayBar=(sel,act,mark)=>`<div class="days" role="tablist">${DAYS.map((d,i)=>`<button role="tab" aria-selected="${i==sel}" aria-label="${d}" data-act="${act}" data-d="${i}" class="${i==sel?'on':''} ${(S.routines[i]||[]).length?'has':''} ${mark&&i==new Date().getDay()?'td':''}">${D3[i]}</button>`).join('')}</div>`;
 
 /* ---------- Tab 1: Create ---------- */
+let srch='',openCats={};
+function libHtml(){
+  const s=srch.trim().toLowerCase();
+  const row=e=>`<div class="card lib" data-act="add" data-id="${e[0]}"><div class="grow"><div class="nm"><b>${e[1]}</b>${qBtn(e)}</div><div class="mu">${e[2]}</div></div><button class="ib" aria-label="Add ${e[1]}">${ic('plus')}</button></div>`;
+  let h='';
+  CATS.forEach(c=>{
+    const all=LIB.filter(e=>e[3]==c),list=s?all.filter(e=>(e[1]+' '+e[2]).toLowerCase().includes(s)):all;
+    if(!list.length)return;
+    const o=s||openCats[c];
+    h+=`<button class="cat" data-act="cat" data-c="${c}" aria-expanded="${!!o}"><span>${c}</span><span class="mu">${s?list.length+' of '+all.length:all.length}</span>${ic('chev')}</button>`+(o?list.map(row).join(''):'');
+  });
+  return h||`<p class="mu">No exercise matches "${esc(srch.trim())}".</p>`;
+}
 function renderCreate(){
   const dr=draft(cDay),dirty=JSON.stringify(dr)!==JSON.stringify(S.routines[cDay]||[]);
   let h=dayBar(cDay,'cday');
   h+=`<section class="card"><div class="row"><h2 class="grow">${DAYS[cDay]}${dirty?'<span class="tag">Unsaved</span>':''}</h2><button class="pri" data-act="save">Save</button></div>`;
   h+=dr.length?dr.map((e,i)=>{const x=ex(e.id);return `<div class="row item"><div class="grow"><b>${x[1]}</b><div class="mu">${e.sets} sets × ${esc(e.target)}</div></div><button class="ib" data-act="edititem" data-i="${i}" aria-label="Edit ${x[1]}">${ic('edit')}</button><button class="ib dg" data-act="rmitem" data-i="${i}" aria-label="Remove ${x[1]}">${ic('x')}</button></div>`}).join(''):'<p class="mu">Nothing planned yet. Tap an exercise below to add it.</p>';
   h+='</section><h2 class="sec">Exercise library</h2>';
-  h+=CATS.map(c=>`<h3>${c}</h3>`+LIB.filter(e=>e[3]==c).map(e=>`<div class="card lib" data-act="add" data-id="${e[0]}"><div class="grow"><div class="nm"><b>${e[1]}</b>${qBtn(e)}</div><div class="mu">${e[2]}</div></div><button class="ib" aria-label="Add ${e[1]}">${ic('plus')}</button></div>`).join('')).join('');
+  h+=`<input id="sq" type="search" placeholder="Search exercises or muscles" aria-label="Search exercises" autocomplete="off" enterkeyhint="search" value="${esc(srch)}"><div id="lib">${libHtml()}</div>`;
   const sv=Object.keys(S.routines).filter(d=>S.routines[d].length).sort((a,b)=>a-b);
   h+='<h2 class="sec">Saved routines</h2>';
   h+=sv.length?sv.map(d=>`<div class="card"><div class="row"><div class="grow"><b>${DAYS[d]}</b>${S.routines[d].map(e=>`<div class="sum">${ex(e.id)[1]}, ${e.sets} × ${esc(e.target)}</div>`).join('')}</div><button class="ib" data-act="load" data-d="${d}" aria-label="Edit ${DAYS[d]}">${ic('edit')}</button><button class="ib" data-act="move" data-d="${d}" aria-label="Move ${DAYS[d]}">${ic('move')}</button><button class="ib dg" data-act="del" data-d="${d}" aria-label="Delete ${DAYS[d]}">${ic('del')}</button></div></div>`).join(''):'<p class="mu">No saved routines yet. Build a day above and tap Save.</p>';
@@ -221,6 +333,7 @@ const A={
     `<label for="vu">YouTube link or video ID</label><div class="row"><input id="vu" value="${esc(u)}" placeholder="https://youtu.be/..."><button class="pri" style="margin-top:6px" data-act="setvid" data-id="${x[0]}">Save</button></div>`);
   },
   setvid:d=>{const v=$('#vu').value.trim();if(v)S.videos[d.id]=v;else delete S.videos[d.id];persist();A.vid({id:d.id})},
+  cat:d=>{openCats[d.c]=!openCats[d.c];$('#lib').innerHTML=libHtml()},
   closeSheet
 };
 
@@ -229,7 +342,8 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('[data-act]');
   if(t&&A[t.dataset.act])A[t.dataset.act](t.dataset);
 });
-document.addEventListener('keydown',e=>{if(e.key=='Escape')closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key=='Escape')closeSheet();if(e.key=='Enter'&&e.target.id=='sq')e.target.blur()});
+document.addEventListener('input',e=>{if(e.target.id=='sq'){srch=e.target.value;$('#lib').innerHTML=libHtml()}});
 
 /* ---------- Day change / weekly reset watcher ---------- */
 function tick(){
