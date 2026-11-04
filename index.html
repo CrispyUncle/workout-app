@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f141b">
 <meta name="color-scheme" content="dark">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Calisthenics Planner</title>
 <style>
 :root{--bg:#0f141b;--c1:#171f29;--c2:#202a36;--ln:#2a3542;--tx:#eef2f7;--mu:#8e9aab;--ac:#7fd6ff;--dg:#ff6b7a}
@@ -237,6 +240,7 @@ function tick(){
 setInterval(tick,30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick()});
 
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 checkReset();persist();render();
 </script>
 </body>
