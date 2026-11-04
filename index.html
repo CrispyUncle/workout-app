@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f141b">
+<meta name="color-scheme" content="dark">
+<title>Calisthenics Planner</title>
+<style>
+:root{--bg:#0f141b;--c1:#171f29;--c2:#202a36;--ln:#2a3542;--tx:#eef2f7;--mu:#8e9aab;--ac:#7fd6ff;--dg:#ff6b7a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+header{padding:calc(14px + env(safe-area-inset-top)) 18px 8px}
+h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.6px}
+h2{margin:0;font-size:17px}
+h3{margin:16px 4px 8px;font-size:15px;color:var(--ac)}
+#sub,.mu{color:var(--mu);font-size:13px}
+main{flex:1;overflow-y:auto;padding:8px 14px 28px;overscroll-behavior:contain}
+button{font:inherit;color:inherit;border:0;background:var(--c2);border-radius:12px;min-height:44px;padding:0 16px;cursor:pointer;transition:transform .08s,background .15s}
+button:active{transform:scale(.95)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.pri{background:var(--ac);color:#0f141b;font-weight:700}
+.dgb{background:var(--dg);color:#fff;font-weight:700}
+.card{background:var(--c1);border:1px solid var(--ln);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.sec{margin:24px 4px 10px;font-size:19px}
+.days{display:flex;gap:6px;margin:4px 0 14px}
+.days button{flex:1;padding:0;min-height:50px;font-size:13px;font-weight:600;position:relative}
+.days .on{background:var(--ac);color:#0f141b}
+.days .has::after{content:"";position:absolute;bottom:6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:currentColor;opacity:.75}
+.days .td{box-shadow:inset 0 0 0 1.5px var(--ac)}
+.tag{font-size:11px;font-weight:700;background:var(--ac);color:#0f141b;border-radius:99px;padding:2px 8px;margin-left:8px;vertical-align:middle}
+.item{padding:8px 0;border-top:1px solid var(--ln);margin-top:8px}
+.ib{width:42px;padding:0;display:grid;place-items:center;flex:none}
+.ib svg{width:20px;height:20px}
+.ib.dg{color:var(--dg)}
+.nm{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.q{position:relative;width:26px;height:26px;min-height:26px;padding:0;border-radius:50%;background:none;border:1.5px solid var(--mu);color:var(--mu);font-weight:700;font-size:13px}
+.q::after{content:"";position:absolute;inset:-10px}
+.lib{display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 10px 10px 14px;margin-bottom:8px}
+.lib:active{background:var(--c2)}
+.sum{font-size:13px;color:var(--mu)}
+.bar{height:8px;background:var(--c2);border-radius:99px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--ac);transition:width .3s}
+.sets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.set{width:48px;height:48px;border-radius:50%;padding:0;border:2px solid var(--ln);font-weight:700;color:var(--mu)}
+.set.on{background:var(--ac);border-color:var(--ac);color:#0f141b}
+.cnt{font-weight:700;color:var(--mu)}
+.fin{border-color:var(--ac)}.fin .cnt{color:var(--ac)}
+nav{display:flex;gap:8px;background:var(--c1);border-top:1px solid var(--ln);padding:6px 10px calc(6px + env(safe-area-inset-bottom))}
+nav button{flex:1;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;color:var(--mu);min-height:54px}
+nav button.on{color:var(--ac)}
+nav svg{width:24px;height:24px}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+#ov[hidden]{display:none}
+.sheet{width:100%;max-width:480px;max-height:92dvh;overflow-y:auto;background:var(--c1);border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+label,.lb{display:block;margin:14px 0 0;font-size:13px;color:var(--mu)}
+input{font:inherit;color:var(--tx);background:var(--c2);border:1px solid var(--ln);border-radius:12px;padding:0 12px;min-height:46px;width:100%;margin-top:6px}
+.acts{display:flex;gap:10px;margin-top:18px}.acts button{flex:1}
+.mv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.mv small{display:block;color:var(--ac);font-size:11px}
+.vid{position:relative;padding-top:56.25%;background:#000;border-radius:12px;overflow:hidden;margin-top:12px}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid.empty{padding:0;height:160px;display:grid;place-items:center;text-align:center;color:var(--mu);font-size:14px;background:var(--c2)}
+#toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#eef2f7;color:#0f141b;padding:10px 16px;border-radius:99px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:20}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><h1 id="ttl"></h1><div id="sub"></div></header>
+<main id="app"></main>
+<nav>
+  <button data-act="tab" data-v="create"><svg viewBox="0 0 24 24" width="24" height="24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M12 8v8M8 12h8"/></svg>Create Workout</button>
+  <button data-act="tab" data-v="track"><svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg>Track Workout</button>
+</nav>
+<div id="ov" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div id="toast" role="status"></div>
+
+<script>
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const D3=DAYS.map(d=>d.slice(0,3));
+
+/* Exercise library: [id, name, muscle focus, category, YouTube URL or video ID]
+   Paste your own links in the last slot, or use the ? popup in the app to set them. */
+const LIB=[
+['pullup','Pull-ups','Lats, biceps, upper back','Pull',''],
+['chinup','Chin-ups','Biceps, lats','Pull',''],
+['row','Australian Rows','Mid back, rear delts, biceps','Pull',''],
+['pushup','Push-ups','Chest, triceps, front delts','Push',''],
+['diamond','Diamond Push-ups','Triceps, inner chest','Push',''],
+['pike','Pike Push-ups','Shoulders, triceps','Push',''],
+['dip','Dips','Chest, triceps, shoulders','Push',''],
+['squat','Bodyweight Squats','Quads, glutes','Legs',''],
+['lunge','Walking Lunges','Quads, glutes, balance','Legs',''],
+['pistol','Pistol Squats','Quads, glutes, balance','Legs',''],
+['hlr','Hanging Leg Raises','Lower abs, hip flexors, grip','Core',''],
+['plank','Plank','Core, shoulders','Core',''],
+['lsit','L-Sit','Abs, hip flexors, triceps','Core',''],
+['hollow','Hollow Body Hold','Abs, deep core','Core','']
+];
+const CATS=['Pull','Push','Legs','Core'];
+const ex=id=>LIB.find(e=>e[0]===id);
+
+/* ---------- State ---------- */
+const K='calisthenics-planner-v1';
+const blank=()=>({routines:{},done:{},videos:{},lastReset:Date.now()});
+let S;try{S=Object.assign(blank(),JSON.parse(localStorage.getItem(K)))}catch(e){S=blank()}
+const persist=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+let tab='create',cDay=new Date().getDay(),tDay=cDay,lastDay=cDay,drafts={};
+
+/* ---------- Weekly reset: unchecks everything once Saturday midnight has passed ---------- */
+function weekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.getTime()}
+function checkReset(){if((S.lastReset||0)<weekStart()){S.done={};S.lastReset=Date.now();persist();return true}return false}
+
+/* ---------- Helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const draft=d=>drafts[d]||(drafts[d]=clone(S.routines[d]||[]));
+const cnt=e=>{const a=S.done[e.u]||[];let n=0;for(let i=0;i<e.sets;i++)if(a[i])n++;return n};
+const ytId=v=>{v=(v||'').trim();const m=v.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test(v)?v:'')};
+const I={edit:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',move:'<path d="M17 3l4 4-4 4M21 7H8M7 21l-4-4 4-4M3 17h13"/>',del:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',plus:'<path d="M12 5v14M5 12h14"/>'};
+const ic=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${I[n]}</svg>`;
+let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)};
+const sheet=h=>{$('#sheet').innerHTML=h;$('#ov').hidden=false};
+const closeSheet=()=>{$('#ov').hidden=true;$('#sheet').innerHTML=''};
+const qBtn=x=>`<button class="q" data-act="vid" data-id="${x[0]}" aria-label="How to do ${x[1]}">?</button>`;
+
+const dayBar=(sel,act,mark)=>`<div class="days" role="tablist">${DAYS.map((d,i)=>`<button role="tab" aria-selected="${i==sel}" aria-label="${d}" data-act="${act}" data-d="${i}" class="${i==sel?'on':''} ${(S.routines[i]||[]).length?'has':''} ${mark&&i==new Date().getDay()?'td':''}">${D3[i]}</button>`).join('')}</div>`;
+
+/* ---------- Tab 1: Create ---------- */
+function renderCreate(){
+  const dr=draft(cDay),dirty=JSON.stringify(dr)!==JSON.stringify(S.routines[cDay]||[]);
+  let h=dayBar(cDay,'cday');
+  h+=`<section class="card"><div class="row"><h2 class="grow">${DAYS[cDay]}${dirty?'<span class="tag">Unsaved</span>':''}</h2><button class="pri" data-act="save">Save</button></div>`;
+  h+=dr.length?dr.map((e,i)=>{const x=ex(e.id);return `<div class="row item"><div class="grow"><b>${x[1]}</b><div class="mu">${e.sets} sets × ${esc(e.target)}</div></div><button class="ib" data-act="edititem" data-i="${i}" aria-label="Edit ${x[1]}">${ic('edit')}</button><button class="ib dg" data-act="rmitem" data-i="${i}" aria-label="Remove ${x[1]}">${ic('x')}</button></div>`}).join(''):'<p class="mu">Nothing planned yet. Tap an exercise below to add it.</p>';
+  h+='</section><h2 class="sec">Exercise library</h2>';
+  h+=CATS.map(c=>`<h3>${c}</h3>`+LIB.filter(e=>e[3]==c).map(e=>`<div class="card lib" data-act="add" data-id="${e[0]}"><div class="grow"><div class="nm"><b>${e[1]}</b>${qBtn(e)}</div><div class="mu">${e[2]}</div></div><button class="ib" aria-label="Add ${e[1]}">${ic('plus')}</button></div>`).join('')).join('');
+  const sv=Object.keys(S.routines).filter(d=>S.routines[d].length).sort((a,b)=>a-b);
+  h+='<h2 class="sec">Saved routines</h2>';
+  h+=sv.length?sv.map(d=>`<div class="card"><div class="row"><div class="grow"><b>${DAYS[d]}</b>${S.routines[d].map(e=>`<div class="sum">${ex(e.id)[1]}, ${e.sets} × ${esc(e.target)}</div>`).join('')}</div><button class="ib" data-act="load" data-d="${d}" aria-label="Edit ${DAYS[d]}">${ic('edit')}</button><button class="ib" data-act="move" data-d="${d}" aria-label="Move ${DAYS[d]}">${ic('move')}</button><button class="ib dg" data-act="del" data-d="${d}" aria-label="Delete ${DAYS[d]}">${ic('del')}</button></div></div>`).join(''):'<p class="mu">No saved routines yet. Build a day above and tap Save.</p>';
+  return h;
+}
+
+function askSets(id,idx){
+  const cur=idx!=null?draft(cDay)[idx]:null,x=ex(cur?cur.id:id);
+  sheet(`<h2>${x[1]}</h2><div class="mu">${x[2]}</div>
+  <label for="fs">Sets</label><input id="fs" type="number" inputmode="numeric" min="1" max="12" value="${cur?cur.sets:3}">
+  <label for="ft">Target reps or hold time</label><input id="ft" value="${cur?esc(cur.target):'10 reps'}" placeholder="10 reps or 30s">
+  <div class="acts"><button data-act="closeSheet">Cancel</button><button class="pri" data-act="commit" data-id="${x[0]}" data-i="${idx==null?'':idx}">${cur?'Update':'Add'}</button></div>`);
+}
+
+/* ---------- Tab 2: Track ---------- */
+function renderTrack(){
+  const r=S.routines[tDay]||[],tot=r.reduce((n,e)=>n+e.sets,0),dn=r.reduce((n,e)=>n+cnt(e),0),isToday=tDay==new Date().getDay();
+  let h=dayBar(tDay,'tday',1);
+  if(!r.length)return h+`<div class="card"><h2>${DAYS[tDay]}${isToday?'<span class="tag">Today</span>':''}</h2><p class="mu">No workout planned for this day.</p><button class="pri" data-act="plan">Plan ${DAYS[tDay]}</button></div>`;
+  h+=`<div class="card"><div class="row"><h2 class="grow">${DAYS[tDay]}${isToday?'<span class="tag">Today</span>':''}</h2><b>${dn}/${tot} sets</b></div><div class="bar"><i style="width:${tot?dn/tot*100:0}%"></i></div></div>`;
+  return h+r.map(e=>{const x=ex(e.id),c=cnt(e),a=S.done[e.u]||[];return `<div class="card ${c==e.sets?'fin':''}"><div class="row"><div class="grow"><div class="nm"><b>${x[1]}</b>${qBtn(x)}</div><div class="mu">${e.sets} sets × ${esc(e.target)}</div></div><span class="cnt">${c}/${e.sets}</span></div><div class="sets">${Array.from({length:e.sets},(_,i)=>`<button class="set ${a[i]?'on':''}" role="checkbox" aria-checked="${!!a[i]}" aria-label="${x[1]} set ${i+1}" data-act="tog" data-u="${e.u}" data-i="${i}">${a[i]?'✓':i+1}</button>`).join('')}</div></div>`}).join('');
+}
+
+/* ---------- Render ---------- */
+function render(keep){
+  const m=$('#app'),y=m.scrollTop;
+  $('#ttl').textContent=tab=='create'?'Create Workout':'Track Workout';
+  $('#sub').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v==tab));
+  m.innerHTML=tab=='create'?renderCreate():renderTrack();
+  m.scrollTop=keep?y:0;
+}
+
+/* ---------- Actions ---------- */
+const A={
+  tab:d=>{tab=d.v;render()},
+  cday:d=>{cDay=+d.d;render()},
+  tday:d=>{tDay=+d.d;render()},
+  plan:()=>{cDay=tDay;tab='create';render()},
+  add:d=>askSets(d.id),
+  edititem:d=>askSets(null,+d.i),
+  rmitem:d=>{draft(cDay).splice(+d.i,1);render(1)},
+  commit:d=>{
+    const s=Math.min(12,Math.max(1,parseInt($('#fs').value)||3)),dr=draft(cDay);
+    let t=$('#ft').value.trim()||'10 reps';if(/^\d+$/.test(t))t+=' reps';
+    if(d.i!=='')dr[+d.i]={...dr[+d.i],sets:s,target:t};else dr.push({u:uid(),id:d.id,sets:s,target:t});
+    closeSheet();render(1);toast(d.i!==''?'Updated':`Added ${ex(d.id)[1]}`);
+  },
+  save:()=>{
+    const dr=draft(cDay);
+    if(dr.length)S.routines[cDay]=clone(dr);else delete S.routines[cDay];
+    persist();render(1);toast(`${DAYS[cDay]} saved`);
+  },
+  load:d=>{cDay=+d.d;delete drafts[cDay];render();},
+  move:d=>{
+    const f=+d.d;
+    sheet(`<h2>Move ${DAYS[f]}'s workout</h2><div class="mu">Pick a day. If it already has a workout, the two days swap.</div><div class="mv">${DAYS.map((n,i)=>i==f?'':`<button data-act="mv" data-f="${f}" data-t="${i}">${n}${(S.routines[i]||[]).length?'<small>swap</small>':''}</button>`).join('')}</div><button class="ib" style="width:100%" data-act="closeSheet">Cancel</button>`);
+  },
+  mv:d=>{
+    const f=+d.f,t=+d.t,a=S.routines[f],b=S.routines[t];
+    if(b&&b.length)S.routines[f]=b;else delete S.routines[f];
+    S.routines[t]=a;drafts={};persist();closeSheet();cDay=t;render();toast(`Moved to ${DAYS[t]}`);
+  },
+  del:d=>sheet(`<h2>Delete ${DAYS[d.d]}'s workout?</h2><div class="mu">This clears the whole routine for that day.</div><div class="acts"><button data-act="closeSheet">Cancel</button><button class="dgb" data-act="dodel" data-d="${d.d}">Delete</button></div>`),
+  dodel:d=>{delete S.routines[d.d];delete drafts[d.d];persist();closeSheet();render(1);toast('Routine deleted')},
+  tog:d=>{
+    const a=S.done[d.u]||(S.done[d.u]=[]);a[+d.i]=!a[+d.i];
+    persist();if(navigator.vibrate)navigator.vibrate(12);render(1);
+  },
+  vid:d=>{
+    const x=ex(d.id),u=S.videos[x[0]]||x[4],id=ytId(u);
+    sheet(`<div class="row"><h2 class="grow">${x[1]}</h2><button class="ib" data-act="closeSheet" aria-label="Close">${ic('x')}</button></div>`+
+    (id?`<div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&playsinline=1" title="${x[1]} tutorial" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`:'<div class="vid empty">No video yet.<br>Paste a YouTube link below.</div>')+
+    `<label for="vu">YouTube link or video ID</label><div class="row"><input id="vu" value="${esc(u)}" placeholder="https://youtu.be/..."><button class="pri" style="margin-top:6px" data-act="setvid" data-id="${x[0]}">Save</button></div>`);
+  },
+  setvid:d=>{const v=$('#vu').value.trim();if(v)S.videos[d.id]=v;else delete S.videos[d.id];persist();A.vid({id:d.id})},
+  closeSheet
+};
+
+document.addEventListener('click',e=>{
+  if(e.target.id=='ov')return closeSheet();
+  const t=e.target.closest('[data-act]');
+  if(t&&A[t.dataset.act])A[t.dataset.act](t.dataset);
+});
+document.addEventListener('keydown',e=>{if(e.key=='Escape')closeSheet()});
+
+/* ---------- Day change / weekly reset watcher ---------- */
+function tick(){
+  const n=new Date().getDay();let ch=checkReset();
+  if(n!=lastDay){lastDay=n;tDay=n;ch=true}
+  if(ch)render(1);
+}
+setInterval(tick,30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick()});
+
+checkReset();persist();render();
+</script>
+</body>
+</html>
